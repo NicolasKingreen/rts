@@ -14,7 +14,7 @@ FILL_COLOR = (231, 231, 231)
 UNITS_ON_START = 3
 
 
-# TODO: grouping around point, point marker, double click selection
+# TODO: grouping around point, point marker, double click selection, settings
 
 
 class Game:

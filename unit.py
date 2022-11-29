@@ -1,7 +1,11 @@
 import pygame
 from pygame import Vector2
 
-from badge import Rhombus
+from random import choice
+
+from badge import Rhombus, Square
+from settings import DRAW_DEBUG
+
 
 DEFAULT_COLOR = (231, 196, 91)
 
@@ -26,7 +30,7 @@ class Unit:
                                       pos[1] - GROUND_HEIGHT // 2,
                                       WIDTH,
                                       GROUND_HEIGHT)
-        self.badge = Rhombus(self)
+        self.badge = choice([Rhombus, Square])(self)
 
         self.move_direction = Vector2()
         self.speed = 400 / 1000  # pxls per sec
@@ -55,7 +59,9 @@ class Unit:
 
     def draw(self, surface):
         pygame.draw.rect(surface, DEFAULT_COLOR, self.rect)
-        pygame.draw.rect(surface, (255, 0, 0), self.ground_box, 1)
-        pygame.draw.circle(surface, (255, 0, 0), self.pos, 1)
+
+        if DRAW_DEBUG:
+            pygame.draw.rect(surface, (255, 0, 0), self.ground_box, 1)
+            pygame.draw.circle(surface, (255, 0, 0), self.pos, 1)
 
         self.badge.draw(surface)
