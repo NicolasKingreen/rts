@@ -1,10 +1,14 @@
-import pygame.draw
+import pygame
+from pygame.math import Vector2
+
+from abc import ABC, abstractmethod
+
 
 DEFAULT_COLOR = (255, 0, 0)
-CONTOUR_COLOR = (232, 121, 0)
+CONTOUR_COLOR = (212, 212, 212)
 
 
-class Badge:
+class Badge(ABC):
     def __init__(self, unit, points=None):
         self.unit = unit
         if points is not None:
@@ -17,16 +21,19 @@ class Badge:
         return self._center
 
     @center.setter
+    @abstractmethod
     def center(self, new_center):
         pass
 
     @property
+    @abstractmethod
     def rect(self):
         return None
 
     def update_pos(self):
         self._calculate_points()
 
+    @abstractmethod
     def _calculate_points(self):
         pass
 
@@ -38,9 +45,15 @@ class Badge:
 
 class Rhombus(Badge):
     def __init__(self, unit):
+        # absolute characteristics
         self.width = 30
         self.height = 40
+
+        # relative characteristics
+        self.size = 40  # long side
+
         self.distance = 10
+
         super().__init__(unit)
 
     @property
@@ -54,8 +67,23 @@ class Rhombus(Badge):
                            self.width,
                            self.height)
 
+    def _calculate_relative_points(self):
+        # should be used to simplify badge positioning and sizing
+        # e. g. for zooming
+        # in this case distance is measured from unit's top to the badge's center
+        # height = 1
+        # width = 0.75
+        center = self.center
+        relative_points = [
+            (Vector2( 0    ,   -0.5)),
+            (Vector2( 0.375,    0  )),
+            (Vector2( 0    ,    0.5)),
+            (Vector2(-0.375,    0  ))
+        ]
+        self.points = [center + point * self.size for point in relative_points]
+
     def _calculate_points(self):
-        # it has to know its dimensions
+        # badge has to know its absolute dimensions
         center = self.center
         self.points = [
             (center[0], center[1] - self.height // 2),

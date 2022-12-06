@@ -60,6 +60,12 @@ class Unit:
     def draw(self, surface):
         pygame.draw.rect(surface, DEFAULT_COLOR, self.rect)
 
+        if self.move_target_pos is not None:
+            # TODO: fix exsessive drawings (for multiple units selected)
+            marker_rect = pygame.Rect(self.move_target_pos, (20, 10))
+            marker_rect.center = self.move_target_pos
+            pygame.draw.ellipse(surface, (255, 0, 0), marker_rect, 2)
+
         if DRAW_DEBUG:
             pygame.draw.rect(surface, (255, 0, 0), self.ground_box, 1)
             pygame.draw.circle(surface, (255, 0, 0), self.pos, 1)

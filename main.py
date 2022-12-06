@@ -6,12 +6,14 @@ from random import randint
 from unit import Unit
 
 
-WIN_SIZE = (640, 420)
+# WIN_SIZE = (640, 420)
+WIN_SIZE = (1280, 720)
+
 FPS_LOCK = 60
 
 FILL_COLOR = (231, 231, 231)
 
-UNITS_ON_START = 3
+UNITS_ON_START = 10
 
 
 # TODO: grouping around point, point marker, double click selection, settings
@@ -29,8 +31,8 @@ class Game:
         self.last_click_pos = None
         self.selection_rect = None
 
-        self.units = [Unit((randint(0, WIN_SIZE[0]),
-                            randint(0, WIN_SIZE[1])))
+        self.units = [Unit((randint(40, WIN_SIZE[0] - 40),
+                            randint(40, WIN_SIZE[1] - 40)))
                       for _ in range(UNITS_ON_START)]
 
     def run(self):
